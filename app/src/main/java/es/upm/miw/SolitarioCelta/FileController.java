@@ -40,10 +40,21 @@ public class FileController {
                 textOfFile.add(linea);
                 linea = fin.readLine();
             }
+            fin.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return textOfFile;
+    }
+
+    public String readLastLine(){
+        ArrayList<String> textOfFile = readAllFile();
+        if(textOfFile.isEmpty()){
+            return null;
+        }
+        else {
+            return textOfFile.get(textOfFile.size() - 1);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package es.upm.miw.SolitarioCelta;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +14,12 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	JuegoCelta juego;
+
     private final String GRID_KEY = "GRID_KEY";
+
+    private final static String STATITISTICS_FILE = "statistics.txt";
+
+    private final static String MATCHES_FILE = "statistics.txt";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,9 +102,41 @@ public class MainActivity extends Activity {
             case R.id.opcAcercaDe:
                 startActivity(new Intent(this, AcercaDe.class));
                 return true;
+            case R.id.opcGuardarPartida:
+                FileController fileController = new FileController(MATCHES_FILE, this);
+                fileController.writeln(juego.serializaTablero());
+                return true;
+            case R.id.opcRecuperarPartida:
+                FileController fileController1 = new FileController(MATCHES_FILE, this);
+                String lastState = fileController1.readLastLine();
+                if(lastState != null && !lastState.equals(juego.serializaTablero())){
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    FileController fileController = new FileController(MATCHES_FILE, MainActivity.this);
+                                    String lastState = fileController.readLastLine();
+                                    juego.deserializaTablero(lastState);
+                                    mostrarTablero();
+                                    break;
 
-            // TODO!!! resto opciones
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Estás seguro de volver a un estado anterior?").setPositiveButton("Sí", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                }
+                else {
+                    juego.deserializaTablero(lastState);
+                    mostrarTablero();
+                }
+                return true;
             default:
                 Toast.makeText(
                         this,
