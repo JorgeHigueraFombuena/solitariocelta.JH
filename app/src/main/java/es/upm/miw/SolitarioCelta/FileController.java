@@ -30,6 +30,24 @@ public class FileController {
         }
     }
 
+    public void save(String text){
+        activity.getApplicationContext().deleteFile(myFile);
+        writeln(text);
+    }
+
+    public boolean existsFilename(){
+        String[] files = activity.getApplicationContext().fileList();
+        int i = 0;
+        boolean found = false;
+        while (!found && i < files.length) {
+            if(files[i].equals(myFile)){
+                found = true;
+            }
+            i++;
+        }
+        return found;
+    }
+
     public ArrayList<String> readAllFile() {
         ArrayList<String> textOfFile = new ArrayList<>();
         try {
@@ -42,7 +60,7 @@ public class FileController {
             }
             fin.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return textOfFile;

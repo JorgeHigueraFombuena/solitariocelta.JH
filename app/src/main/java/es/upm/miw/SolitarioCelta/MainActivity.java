@@ -17,8 +17,6 @@ public class MainActivity extends Activity {
 
     private final String GRID_KEY = "GRID_KEY";
 
-    private final static String STATITISTICS_FILE = "statistics.txt";
-
     private final static String MATCHES_FILE = "statistics.txt";
 
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,11 @@ public class MainActivity extends Activity {
 
         mostrarTablero();
         if (juego.juegoTerminado()) {
-            // TODO guardar puntuación
+
+            FileController fileController = new FileController(StatisticsActivity.STATITISTICS_FILE, this);
+            //TODO: añadir usuario
+            fileController.writeln("user|" + juego.numeroFichas());
+
             new AlertDialogFragment().show(getFragmentManager(), "ALERT DIALOG");
         }
     }
@@ -96,16 +98,20 @@ public class MainActivity extends Activity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.opcAjustes:
                 startActivity(new Intent(this, SCeltaPrefs.class));
                 return true;
+
             case R.id.opcAcercaDe:
                 startActivity(new Intent(this, AcercaDe.class));
                 return true;
+
             case R.id.opcGuardarPartida:
                 FileController fileController = new FileController(MATCHES_FILE, this);
-                fileController.writeln(juego.serializaTablero());
+                fileController.save(juego.serializaTablero());
                 return true;
+
             case R.id.opcRecuperarPartida:
                 FileController fileController1 = new FileController(MATCHES_FILE, this);
                 String lastState = fileController1.readLastLine();
@@ -129,7 +135,7 @@ public class MainActivity extends Activity {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Estás seguro de volver a un estado anterior?").setPositiveButton("Sí", dialogClickListener)
+                    builder.setMessage("Estás seguro de volver a un estado guardado anterior?").setPositiveButton("Sí", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
                 }
                 else {
@@ -137,6 +143,33 @@ public class MainActivity extends Activity {
                     mostrarTablero();
                 }
                 return true;
+
+            case R.id.opcMejoresResultados:
+               startActivity(new Intent(this, StatisticsActivity.class));
+                return true;
+
+            case R.id.opcReiniciarPartida:
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                juego.reiniciar();
+                                mostrarTablero();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Estás seguro de reniciar la partida?").setPositiveButton("Sí", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                return true;
+
             default:
                 Toast.makeText(
                         this,
