@@ -1,6 +1,7 @@
 package es.upm.miw.SolitarioCelta;
 
 
+import java.util.Date;
 
 public class Puntuation {
 
@@ -8,11 +9,13 @@ public class Puntuation {
 
     private int numberOfTokens;
 
-    public Puntuation(String userName, int numberOfTokens){
-        this.setUserName(userName);
-        this.setNumberOfTokens(numberOfTokens);
-    }
+    private Date date;
 
+    public Puntuation(String userName, int numberOfTokens, Date date){
+        this.userName = userName;
+        this.numberOfTokens = numberOfTokens;
+        this.date = date;
+    }
 
     public String getUserName() {
         return userName;
@@ -30,4 +33,11 @@ public class Puntuation {
         this.numberOfTokens = numberOfTokens;
     }
 
+    public Date getDate(){
+        return date;
+    }
+
+    public void setDate(Date date){
+        this.date = date;
+    }
 }

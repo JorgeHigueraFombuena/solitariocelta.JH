@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -31,6 +32,8 @@ public class MyAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout vista;
 
+        SimpleDateFormat sdf = new SimpleDateFormat(context.getString(R.string.formatDate));
+
         if(convertView != null){
             vista = (LinearLayout) convertView;
         }
@@ -46,6 +49,14 @@ public class MyAdapter extends ArrayAdapter {
         ((TextView)vista.findViewById(R.id.userName)).setText(puntuation.getUserName());
 
         ((TextView)vista.findViewById(R.id.numToken)).setText(String.valueOf(puntuation.getNumberOfTokens()));
+
+        String date = context.getString(R.string.unknown);
+        ((TextView)vista.findViewById(R.id.date)).setTextSize(10);
+        if(puntuation.getDate() != null){
+            date = sdf.format(puntuation.getDate());
+        }
+        ((TextView)vista.findViewById(R.id.date)).setText(date);
+
         return vista;
     }
 }

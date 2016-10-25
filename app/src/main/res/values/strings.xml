@@ -33,5 +33,12 @@
     <string name="user">Nombre de usuario</string>
     <string name="position">Posicion</string>
     <string name="num_tokens">Número de fichas</string>
+    <string name="restoreMatch">Estás seguro de volver a un estado guardado anterior?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="restartMatch">Estás seguro de reniciar la partida?</string>
+    <string name="formatDate">dd/MM/yyyy</string>
+    <string name="date">Fecha</string>
+    <string name="unknown">Desconocida</string>
 
 </resources>

@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends Activity {
 
 	JuegoCelta juego;
@@ -45,10 +48,12 @@ public class MainActivity extends Activity {
         if (juego.juegoTerminado()) {
 
             FileController fileController = new FileController(StatisticsActivity.STATITISTICS_FILE, this);
-            //TODO: añadir usuario
+
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String user = settings.getString("nombreJugador", "user");
-            fileController.writeln( user + "|" + juego.numeroFichas());
+            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
+            String currentDateandTime = sdf.format(new Date());
+            fileController.writeln( user + "|" + juego.numeroFichas() + "|" + currentDateandTime);
 
             new AlertDialogFragment().show(getFragmentManager(), "ALERT DIALOG");
         }
@@ -139,8 +144,8 @@ public class MainActivity extends Activity {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Estás seguro de volver a un estado guardado anterior?").setPositiveButton("Sí", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
+                    builder.setMessage(R.string.restoreMatch).setPositiveButton(R.string.yes, dialogClickListener)
+                            .setNegativeButton(R.string.no, dialogClickListener).show();
                 }
                 else {
                     juego.deserializaTablero(lastState);
@@ -170,8 +175,8 @@ public class MainActivity extends Activity {
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Estás seguro de reniciar la partida?").setPositiveButton("Sí", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                builder.setMessage(R.string.restartMatch).setPositiveButton(R.string.yes, dialogClickListener)
+                        .setNegativeButton(R.string.no, dialogClickListener).show();
                 return true;
 
             default:

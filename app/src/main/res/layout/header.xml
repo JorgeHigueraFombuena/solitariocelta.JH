@@ -23,5 +23,13 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="@string/num_tokens" />
+        android:text="@string/num_tokens"
+        />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="@string/date" />
 </LinearLayout>

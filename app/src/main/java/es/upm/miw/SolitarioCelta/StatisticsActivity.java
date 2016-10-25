@@ -6,9 +6,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class StatisticsActivity extends Activity {
@@ -29,9 +32,21 @@ public class StatisticsActivity extends Activity {
         List<Puntuation> listOfStatistics = new ArrayList<>();
         if (fileController.existsFilename()) {
             List<String> aux = fileController.readAllFile();
+            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
             for (String str : aux){
                 String[] splitted = str.split("\\|");
-                listOfStatistics.add(new Puntuation(splitted[0],Integer.valueOf(splitted[1])));
+                try {
+                    Date date = null;
+                    if(splitted.length > 2){
+                        date = sdf.parse(splitted[2]);
+                    }
+                    listOfStatistics.add(new Puntuation(
+                            splitted[0]
+                            ,Integer.valueOf(splitted[1])
+                            ,date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             Collections.sort(listOfStatistics, new Comparator<Puntuation>() {
                 @Override
