@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +46,9 @@ public class MainActivity extends Activity {
 
             FileController fileController = new FileController(StatisticsActivity.STATITISTICS_FILE, this);
             //TODO: añadir usuario
-            fileController.writeln("user|" + juego.numeroFichas());
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String user = settings.getString("nombreJugador", "user");
+            fileController.writeln( user + "|" + juego.numeroFichas());
 
             new AlertDialogFragment().show(getFragmentManager(), "ALERT DIALOG");
         }
