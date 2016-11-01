@@ -42,18 +42,18 @@ public class MyAdapter extends ArrayAdapter {
             vista = (LinearLayout) inf.inflate(resourceId, parent, false);
         }
 
-        Puntuation puntuation = (Puntuation) objects.get(position);
+        Resultado res = (Resultado) objects.get(position);
 
         ((TextView)vista.findViewById(R.id.position)).setText(String.valueOf(position+1));
 
-        ((TextView)vista.findViewById(R.id.userName)).setText(puntuation.getUserName());
+        ((TextView)vista.findViewById(R.id.userName)).setText(res.get_nombreJugador());
 
-        ((TextView)vista.findViewById(R.id.numToken)).setText(String.valueOf(puntuation.getNumberOfTokens()));
+        ((TextView)vista.findViewById(R.id.numToken)).setText(String.valueOf(res.get_puntuacion()));
 
         String date = context.getString(R.string.unknown);
         ((TextView)vista.findViewById(R.id.date)).setTextSize(10);
-        if(puntuation.getDate() != null){
-            date = sdf.format(puntuation.getDate());
+        if(res.get_tiempo() > 0L){
+            date = sdf.format(res.get_tiempo());
         }
         ((TextView)vista.findViewById(R.id.date)).setText(date);
 

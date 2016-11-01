@@ -52,8 +52,10 @@ public class MainActivity extends Activity {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String user = settings.getString("nombreJugador", "user");
             SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
+
             String currentDateandTime = sdf.format(new Date());
-            fileController.writeln( user + "|" + juego.numeroFichas() + "|" + currentDateandTime);
+            Resultado res = new Resultado(0,user,juego.numeroFichas(),juego.serializaTablero(),new Date().getTime());
+            fileController.writeln(res.serialize());
 
             new AlertDialogFragment().show(getFragmentManager(), "ALERT DIALOG");
         }

@@ -29,32 +29,21 @@ public class StatisticsActivity extends Activity {
 
         FileController fileController = new FileController(STATITISTICS_FILE, this);
 
-        List<Puntuation> listOfStatistics = new ArrayList<>();
+        List<Resultado> listOfStatistics = new ArrayList<>();
         if (fileController.existsFilename()) {
             List<String> aux = fileController.readAllFile();
-            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
             for (String str : aux){
-                String[] splitted = str.split("\\|");
-                try {
-                    Date date = null;
-                    if(splitted.length > 2){
-                        date = sdf.parse(splitted[2]);
-                    }
-                    listOfStatistics.add(new Puntuation(
-                            splitted[0]
-                            ,Integer.valueOf(splitted[1])
-                            ,date));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Resultado res = new Resultado();
+                res.deserialize(str);
+                listOfStatistics.add(res);
             }
-            Collections.sort(listOfStatistics, new Comparator<Puntuation>() {
+            Collections.sort(listOfStatistics, new Comparator<Resultado>() {
                 @Override
-                public int compare(Puntuation o1, Puntuation o2) {
-                    if(o1.getNumberOfTokens() > o2.getNumberOfTokens()){
+                public int compare(Resultado o1, Resultado o2) {
+                    if(o1.get_puntuacion() > o2.get_puntuacion()){
                         return 1;
                     }
-                    else if(o1.getNumberOfTokens() < o2.getNumberOfTokens()){
+                    else if(o1.get_puntuacion() < o2.get_puntuacion()){
                         return -1;
                     }
                     else {
