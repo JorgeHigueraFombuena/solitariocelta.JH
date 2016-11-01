@@ -157,9 +157,16 @@ class JuegoCelta {
 	 * @param str representación del tablero
      */
 	public void deserializaTablero(String str) {
-		for (int i = 0, cont = 0; i < TAMANIO; i++)
-			for (int j = 0; j < TAMANIO; j++)
+		int count = 0;
+		for (int i = 0, cont = 0; i < TAMANIO; i++) {
+			for (int j = 0; j < TAMANIO; j++) {
 				tablero[i][j] = str.charAt(cont++) - '0';
+				if(tablero[i][j] > 0){
+					count++;
+				}
+			}
+		}
+		this.numFichas = count;
 	}
 
 	/**

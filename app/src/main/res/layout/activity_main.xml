@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <!-- Row 0 -->
         <RadioButton
@@ -193,4 +193,12 @@
             android:layout_below="@id/p54"/>
 
     </RelativeLayout>
+    <TextView
+        android:id="@+id/numToken"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="50dp"
+        />
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         juego = new JuegoCelta();
         mostrarTablero();
+        updateNumTokens();
     }
 
     /**
@@ -43,6 +45,8 @@ public class MainActivity extends Activity {
         int j = resourceName.charAt(2) - '0';   // columna
 
         juego.jugar(i, j);
+
+        updateNumTokens();
 
         mostrarTablero();
         if (juego.juegoTerminado()) {
@@ -112,15 +116,18 @@ public class MainActivity extends Activity {
 
             case R.id.opcAjustes:
                 startActivity(new Intent(this, SCeltaPrefs.class));
+                updateNumTokens();
                 return true;
 
             case R.id.opcAcercaDe:
                 startActivity(new Intent(this, AcercaDe.class));
+                updateNumTokens();
                 return true;
 
             case R.id.opcGuardarPartida:
                 FileController fileController = new FileController(MATCHES_FILE, this);
                 fileController.save(juego.serializaTablero());
+                updateNumTokens();
                 return true;
 
             case R.id.opcRecuperarPartida:
@@ -136,10 +143,12 @@ public class MainActivity extends Activity {
                                     String lastState = fileController.readLastLine();
                                     juego.deserializaTablero(lastState);
                                     mostrarTablero();
+                                    updateNumTokens();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //No button clicked
+                                    updateNumTokens();
                                     break;
                             }
                         }
@@ -151,12 +160,15 @@ public class MainActivity extends Activity {
                 }
                 else {
                     juego.deserializaTablero(lastState);
+                    updateNumTokens();
                     mostrarTablero();
                 }
+                updateNumTokens();
                 return true;
 
             case R.id.opcMejoresResultados:
                startActivity(new Intent(this, StatisticsActivity.class));
+                updateNumTokens();
                 return true;
 
             case R.id.opcReiniciarPartida:
@@ -167,10 +179,12 @@ public class MainActivity extends Activity {
                             case DialogInterface.BUTTON_POSITIVE:
                                 juego.reiniciar();
                                 mostrarTablero();
+                                updateNumTokens();
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button clicked
+                                updateNumTokens();
                                 break;
                         }
                     }
@@ -179,6 +193,7 @@ public class MainActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.restartMatch).setPositiveButton(R.string.yes, dialogClickListener)
                         .setNegativeButton(R.string.no, dialogClickListener).show();
+                updateNumTokens();
                 return true;
 
             default:
@@ -187,7 +202,13 @@ public class MainActivity extends Activity {
                         getString(R.string.txtSinImplementar),
                         Toast.LENGTH_SHORT
                 ).show();
+                updateNumTokens();
         }
         return true;
+    }
+
+    private void updateNumTokens(){
+        TextView textView = (TextView)findViewById(R.id.numToken);
+        textView.setText(juego.numeroFichas() + "");
     }
 }
